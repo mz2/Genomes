@@ -1,13 +1,118 @@
 <head>
-  <title>genomes</title>
+	<title>genomes</title>
+
+	<script language="javascript" src="http://www.biodalliance.org/js/dalliance-compiled.js"></script>
+	<script language="javascript">
+	new Browser({
+		chr:          '22',
+		viewStart:    30000000,
+		viewEnd:      30030000,
+		cookieKey:    'human',
+
+		sources:     [{name:                 'Genome',      
+		uri:                  'http://www.derkholm.net:8080/das/hg18comp/',        
+		tier_type:            'sequence',
+		provides_entrypoints: true},
+		{name:                 'Genes',     
+		desc:                 'Gene structures from Ensembl 54',
+		uri:                  'http://www.derkholm.net:8080/das/hsa_54_36p/',      
+		collapseSuperGroups:  true,
+		provides_karyotype:   true,
+		provides_search:      true},
+		{name:                 'Repeats',     
+		uri:                  'http://www.derkholm.net:8080/das/hsa_54_36p/',      
+		stylesheet_uri:       'http://www.derkholm.net/dalliance-test/stylesheets/ens-repeats.xml'},
+		{name:                 'MeDIP raw',
+		uri:                  'http://www.derkholm.net:8080/das/medipseq_reads'},
+		{name:                 'MeDIP-seq',
+		uri:                  'http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_seq_SP/'}],
+
+		searchEndpoint: new DASSource('http://www.derkholm.net:8080/das/hsa_54_36p/'),
+		browserLinks: {
+			Ensembl: 'http://ncbi36.ensembl.org/Homo_sapiens/Location/View?r=${chr}:${start}-${end}',
+			UCSC: 'http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg18&position=chr${chr}:${start}-${end}',
+		},
+
+		forceWidth: 700
+	});
+	</script>
 </head>
 
 <body>
-  {{> hello}}
-</body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">Genomes</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Share<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="nav-header">Send</li>
+								<li><a href="#">Post on Twitter</a></li>
+								<li><a href="#">Post on Facebook</a></li>
+								<li><a href="#">Send via email</a></li>
+								<li class="divider"></li>
+								<li class="nav-header">Export</li>
+								<li><a href="#">SVG</a></li>
+								<li><a href="#">PDF</a></li>
+							</ul>
+						</li>
+						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Tracks<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li class="nav-header">Current tracks</li>
+								<li><a href="#">8k_dkfz</a></li>
+								<li><a href="#">affy100k</a></li>
+								<li><a href="#">affy10k</a></li>
+								<li class="divider"></li>
+								<li class="nav-header">Add tracks</li>
+								<li><a href="#">affy250_nsp</a></li>
+								<li><a href="#">affy500k</a></li>
+							</ul>
+						</li>
 
-<template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
-</template>
+						<li>
+							<a href="#">Settings</a>
+						</li>
+					</ul>
+					<form class="navbar-search pull-right" action="">
+						<input type="text" class="search-query span2" placeholder="Search">
+					</form>
+				</div><!-- /.nav-collapse -->
+			</div>
+		</div><!-- /navbar-inner -->
+	</div><!-- /navbar -->
+	<div class="container span12">
+		<div class="row">
+			<div class="span2">
+				<ul class="nav nav-list">
+					<li class="nav-header">
+						Genomes
+					</li>
+					<li>
+						<a href="#">Human</a>
+						<a href="#">Mouse</a>
+						<a href="#">Yeast</a>
+					</li>
+					<li class="nav-header">
+						Projects
+					</li>
+					<li><a href="#">PhD project</a></li>
+					<li><a href="#">Methylation</a></li>
+					<li class="nav-header">
+						People
+					</li>
+					<li><a href="#">Me</a></li>
+					<li><a href="#">Thomas</a></li>
+				</ul>
+			</div>
+			<div class="span7">
+				<div class="container">
+					<div id="svgHolder"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
