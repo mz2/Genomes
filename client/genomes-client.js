@@ -34,5 +34,12 @@ $(document).bind('DOMNodeInserted', function(event)
 			},
 	        embedMargin: 260
 		});
+		
+		$('#popover_test').popover(
+			{animation: true, 
+			 placement: 'right',
+			 trigger: 'hover', 
+			 title:'Foobar',
+			 content: '<h1>foobar</h1>'})
 	}
 });
