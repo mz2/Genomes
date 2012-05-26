@@ -34,6 +34,7 @@ $(document).bind('DOMNodeInserted', function(event)
 			},
 	        embedMargin: 260
 		});
+
 		Dalliance.addFeatureListener(function(ev, hit) {
 		    console.log(miniJSONify(hit));
 			var mx = ev.clientX + window.scrollX, my = ev.clientY + window.scrollY;
