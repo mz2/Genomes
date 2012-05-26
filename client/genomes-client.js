@@ -34,8 +34,8 @@ $(document).bind('DOMNodeInserted', function(event)
 			},
 	        embedMargin: 260
 		});
+
 		Dalliance.addFeatureListener(function(ev, hit) {
-		    console.log(miniJSONify(hit));
 			var mx = ev.clientX + window.scrollX, my = ev.clientY + window.scrollY;
 			var popup = makeElement('div', '', {className: 'popover fade right in'}, {
                 position: 'absolute',
@@ -47,20 +47,44 @@ $(document).bind('DOMNodeInserted', function(event)
 			var popover_arrow   = makeElement('div', '', {className: 'arrow'}, {});
 			var popover_inner   = makeElement('div', '', {className: 'popover-inner'}, {});
 			var popover_title   = makeElement('h3' , 'Foobar', {className: 'popover-title'}, {});
-			var popover_content = makeElement('div', 'asdfasdf', {className: 'popover-content'}, {});
+			var pop_dismiss_btn = makeElement('button', '', {id: 'dismissbutton', className: 'dismissbutton close'}, {
+				float: 'right',
+				'vertical-align': 'top',
+				height: '20px',
+			});
+			var pop_dismiss_img = makeElement('i', '', {className: 'icon-remove'}, {
+				'vertical-align': 'top'
+			});
+			var popover_content = makeElement('div', 'Popover content goes here', {className: 'popover-content'}, {});
 			popup.appendChild(popover_arrow);
 			popup.appendChild(popover_inner);
 			popover_inner.appendChild(popover_title);
+			popover_title.appendChild(pop_dismiss_btn);
+			pop_dismiss_btn.appendChild(pop_dismiss_img);
 			popover_inner.appendChild(popover_content);
 			Dalliance.svgHolder.appendChild(popup);
+			$('#dismissbutton').click(function() { $('.popover').remove() });
 		});
-		
-		$('#popover_test').popover(
-			{animation: true, 
-			 placement: 'right',
-			 trigger: 'manual', 
-			 title:'Foobar',
-			 content: '<h1>foobar</h1>'});
-		$('#popover_test').popover('show');
 	}
+});
+
+$(document).click(function(e){
+  var elem = document.elementFromPoint(e.clientX, e.clientY);
+  var popoverFound = false;
+  if (elem === 'undefined') { console.log('No element hit'); $('.popover').remove(); }
+  else {
+	while (!(elem == 'undefined')){
+		if (elem.className && (elem.className.indexOf('popover') >= 0)){
+			popoverFound = true;
+			break;
+		}
+		if (!(elem.parentNode)) {
+			break;
+		}
+		elem = elem.parentNode;
+	}
+  }
+  if (!popoverFound){
+	$('.popover').remove();
+  }
 });
