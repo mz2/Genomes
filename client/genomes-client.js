@@ -36,6 +36,7 @@ $(document).bind('DOMNodeInserted', function(event)
 		});
 
 		Dalliance.addFeatureListener(function(ev, hit) {
+			$('.popover').remove();
 			var mx = ev.clientX + window.scrollX, my = ev.clientY + window.scrollY;
 			var popup = makeElement('div', '', {className: 'popover fade right in'}, {
                 position: 'absolute',
