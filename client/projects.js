@@ -61,14 +61,12 @@ Template.navigation_bar.events = {
 		var sources = Dalliance.sources;
 		var availableSources = Dalliance.availableSources.value;
 		
-		console.log(availableSources.value);
-		
 		for (var i = 0; i < availableSources.length; i++){
 			var source = availableSources[i];
 			var uri = source.source_uri;
 			var existingSource = Sources.findOne({source_uri: uri});
 			if (!existingSource){
-				console.log("Saved new source " + uri);
+				//console.log("Saved new source " + uri);
 				Sources.insert(source);
 			}
 			else
@@ -99,6 +97,7 @@ Template.navigation_bar.events = {
 			var checkboxElem 
 				= makeElement("input", "", {checked:false, type:'checkbox', className:'available-track-source-selection'}, {});
 			
+			checkboxElem.setAttribute('data-name', source.name);
 			checkboxElem.setAttribute('data-value', source.source_uri);
 			
 			includeElem.appendChild(checkboxLabelElem);
@@ -110,9 +109,16 @@ Template.navigation_bar.events = {
 		available_tracks_container.appendChild(tableElem);
 		
 		var availableTrackSources = $('.available-track-source-selection').click(function(event) { 
-			var data_uri = event.target.getAttribute('data-value');
-			console.log(event.target);
-			alert("Should add " + data_uri);
+			var uri = event.target.getAttribute('data-value');
+			var name = event.target.getAttribute('data-name');
+			var source = Sources.findOne({'source_uri': uri});
+			
+			if (!source){
+				alert("Could not find source with source URI '" + uri + "'");
+			}
+			else{
+				Dalliance.addTier(source);
+			}
 		});
 		
 		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
