@@ -44,7 +44,13 @@ Template.container.project_list_header = function() {
 
 Template.navigation_bar.events = {
 	'click #configure-tracks': function(event){
-		
+		//$('#renamed-project-name').text(proj_name);
+		//$('#renamed-project-field').val(proj_name);
+		$('#track-config-save-changes').click(function(event){
+			console.log("Saving track config: to implement.");
+			//Session.set("track-config", );
+		});
+		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
 }
 

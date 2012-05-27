@@ -63,7 +63,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- sample modal content -->
+
     <div id="rename-project-modal" class="modal hide fade">
      <div class="modal-header">
        <button class="close" data-dismiss="modal">&times;</button>
@@ -75,6 +75,23 @@
      <div class="modal-footer">
        <a href="#" id="rename-project-cancel" class="btn" data-dismiss="modal">Cancel</a>
        <a href="#" id="rename-project-save-changes" class="btn btn-primary" data-dismiss="modal">Rename</a>
+     </div>
+   </div>
+
+    <div id="track-config-modal" class="modal hide fade">
+     <div class="modal-header">
+       <button class="close" data-dismiss="modal">&times;</button>
+       <h3>Your Tracks</h3>
+     </div>
+     <div class="modal-body">
+		Foobar
+     </div>
+	 <div class="modal-header">
+		<h3>Available Tracks</h3>
+	</div>
+     <div class="modal-footer">
+       <a href="#" id="track-config-cancel" class="btn" data-dismiss="modal">Cancel</a>
+       <a href="#" id="track-config-save-changes" class="btn btn-primary" data-dismiss="modal">Save Changes</a>
      </div>
    </div>
 </template>
@@ -95,7 +112,7 @@
 	{{#if selected}}
 	<li class="nav-item active">
 		<div class="btn-group">
-	          <button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i>{{name}} <span class="caret"></span></button>
+	          <button class="btn btn-primary dropdown-toggle" style="margin-bottom:3px;" data-toggle="dropdown"><i class="icon-book"></i>{{name}} <span class="caret"></span></button>
 	          <ul class="dropdown-menu">
 	            <li><a class="rename-project" data-value="{{name}}" href="#">Rename</a></li>
 	            <li><a class="copy-project-link" data-value="{{name}}" href="#">Copy Link</a></li>
@@ -109,7 +126,7 @@
 		</ul>
 	</li>
 	{{else}}
-	<li class="nav-item">
+	<li class="nav-item" style="padding-left:9px;">
 		<span><i class="icon-book"/><a class="project-item" href="#">{{name}}</a></span>
 	</li>
 	{{/if}}
