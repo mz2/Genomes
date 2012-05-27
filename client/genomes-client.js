@@ -73,6 +73,10 @@ $(document).bind('DOMNodeInserted', function(event)
 			Session.set('chromosome_min', min);
 			Session.set('chromosome_max', max);
 	  	});
+	
+	 	Dalliance.addRegionSelectListener(function(chr, min, max) {
+	      Dalliance.highlightRegion(chr, min, max);
+	  	});
 		
 		!function(d,s,id){
 			var js,fjs=d.getElementsByTagName(s)[0];
