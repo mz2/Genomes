@@ -50,19 +50,18 @@ Template.container.project_list_header = function() {
 }*/
 
 Template.navigation_bar.events = {
-	'click #configure-tracks': function(event){
-		//$('#renamed-project-name').text(proj_name);
-		//$('#renamed-project-field').val(proj_name);
-		$('#track-config-save-changes').click(function(event){
-			console.log("Saving track config: to implement.");
-			//Session.set("track-config", );
-		});
-		
+	'click #configure-tracks': function(event){		
 		var sources = Dalliance.sources;
 		var availableSources = Dalliance.availableSources.value;
 		
-		for (var i = 0; i < availableSources.length; i++){
-			var source = availableSources[i];
+		var allSources = availableSources.slice(0);
+		for (var i = 0; i < sources.length; i++){
+			allSources.push(sources[i]);
+		}
+		
+		// Persist all possibly missing sources into our database
+		for (var i = 0; i < allSources.length; i++){
+			var source = allSources[i];
 			var uri = source.source_uri;
 			var existingSource = Sources.findOne({source_uri: uri});
 			if (!existingSource){
@@ -85,10 +84,6 @@ Template.navigation_bar.events = {
 			available_tracks_container.removeChild(children[i]);
 		}
 		
-		var allSources = availableSources.slice(0);
-		for (var i = 0; i < sources.length; i++){
-			allSources.push(sources[i]);
-		}
 		
 		for (var i = 0; i < availableSources.length; i++){
 			var source = availableSources[i];
@@ -150,7 +145,7 @@ Template.navigation_bar.events = {
 			else{
 				Dalliance.addTier(source);
 				var trElem = checkbox.parentNode.parentNode.parentNode;
-				if (trElem.tagName == 'tr') { trElem.parentNode.removeChild(trElem); }
+				if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
 				yourSourcesTBody.appendChild(trElem);
 				checkbox.className = 'your-track-source-selection';
 			}
@@ -158,16 +153,20 @@ Template.navigation_bar.events = {
 		
 		// Removal of a source
 		var yourTrackSources = $('.your-track-source-selection').click(function(event){
-			var uri = event.target.getAttribute('data-value');
-			var name = event.target.getAttribute('data-name');
+			var checkbox = event.target;
+			var uri = checkbox.getAttribute('data-value');
+			var name = checkbox.getAttribute('data-name');
 			var source = Sources.findOne({'source_uri': uri});
 			
 			if (!source){
 				alert("Could not find source with source URI '" + uri + "'");
 			}
 			else{
-				Dalliance.removeTier(source);
-				event.target.parentNode.removeChild(event.target);
+				var trElem = checkbox.parentNode.parentNode.parentNode;
+				if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
+				tHeadElem.appendChild(trElem);
+				checkbox.className = 'available-track-source-selection';
+				//Dalliance.removeTier(source); //TODO: Re-introduce when track removal is possible
 			}
 		});
 		
