@@ -102,6 +102,9 @@ Template.project_list.events = {
 	if (proj_name){
 		$('#renamed-project-name').text(proj_name);
 		$('#renamed-project-field').val(proj_name);
+		$('#rename-project-save-changes').click(function(event) {
+			Projects.update({name:proj_name}, {name: $('#renamed-project-field').val()} ) 
+		});
 		$('#rename-project-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
   },
