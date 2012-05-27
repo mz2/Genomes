@@ -106,6 +106,10 @@ Template.navigation_bar.events = {
 		}
 		
 		var yourSourcesTBody = $('#track-config-your-tracks-tbody').get(0);
+		var yourChildren = $('#track-config-your-tracks-tbody').children().get()
+		for (var i = 0; i <  yourChildren.length; i++){
+			yourSourcesTBody.removeChild(yourChildren[i]);
+		}
 		for (var i = 0; i < sources.length; i++){
 			var source = sources[i];
 			
