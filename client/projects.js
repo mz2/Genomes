@@ -66,7 +66,7 @@ Template.navigation_bar.events = {
 			var uri = source.source_uri;
 			var existingSource = Sources.findOne({source_uri: uri});
 			if (!existingSource){
-				//console.log("Saved new source " + uri);
+				console.log("Persisted source " + uri);
 				Sources.insert(source);
 			}
 			else
@@ -83,6 +83,11 @@ Template.navigation_bar.events = {
 		var children = $('#track-config-available-tracks-container').children().get()
 		for (var i = 0; i < children.length; i++){
 			available_tracks_container.removeChild(children[i]);
+		}
+		
+		var allSources = availableSources.slice(0);
+		for (var i = 0; i < sources.length; i++){
+			allSources.push(sources[i]);
 		}
 		
 		for (var i = 0; i < availableSources.length; i++){
@@ -132,7 +137,27 @@ Template.navigation_bar.events = {
 		
 		available_tracks_container.appendChild(tableElem);
 		
+		// Adding a source
 		var availableTrackSources = $('.available-track-source-selection').click(function(event){ 
+			var checkbox = event.target;
+			var uri = checkbox.getAttribute('data-value');
+			var name = checkbox.getAttribute('data-name');
+			var source = Sources.findOne({'source_uri': uri});
+			
+			if (!source){
+				alert("Could not find source with source URI '" + uri + "'");
+			}
+			else{
+				Dalliance.addTier(source);
+				var trElem = checkbox.parentNode.parentNode.parentNode;
+				if (trElem.tagName == 'tr') { trElem.parentNode.removeChild(trElem); }
+				yourSourcesTBody.appendChild(trElem);
+				checkbox.className = 'your-track-source-selection';
+			}
+		});
+		
+		// Removal of a source
+		var yourTrackSources = $('.your-track-source-selection').click(function(event){
 			var uri = event.target.getAttribute('data-value');
 			var name = event.target.getAttribute('data-name');
 			var source = Sources.findOne({'source_uri': uri});
@@ -141,7 +166,8 @@ Template.navigation_bar.events = {
 				alert("Could not find source with source URI '" + uri + "'");
 			}
 			else{
-				Dalliance.addTier(source);
+				Dalliance.removeTier(source);
+				event.target.parentNode.removeChild(event.target);
 			}
 		});
 		
