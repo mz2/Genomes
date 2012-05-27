@@ -25,8 +25,8 @@ $(document).bind('DOMNodeInserted', function(event)
 						  		source_uri: 'hsa_54_36p',
 							 	uri: 'http://www.derkholm.net:8080/das/hsa_54_36p/', 
 							 	stylesheet_uri: 'http://www.derkholm.net/dalliance-test/stylesheets/ens-repeats.xml'},
-							 	{name: 'MeDIP raw', uri: 'http://www.derkholm.net:8080/das/medipseq_reads'},
-							 	{name: 'MeDIP-seq', uri: 'http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_seq_SP/'}],
+						 	{name: 'MeDIP raw', source_uri:'medipseq_reads', uri: 'http://www.derkholm.net:8080/das/medipseq_reads'},
+						 	{name: 'MeDIP-seq', source_uri:'batman_seq_SP', uri: 'http://www.ebi.ac.uk/das-srv/genomicdas/das/batman_seq_SP/'}],
 			searchEndpoint: new DASSource('http://www.derkholm.net:8080/das/hsa_54_36p/'),
 			browserLinks: {
 				Ensembl: 'http://ncbi36.ensembl.org/Homo_sapiens/Location/View?r=${chr}:${start}-${end}',
