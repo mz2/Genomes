@@ -91,7 +91,6 @@ Template.navigation_bar.events = {
 			var trElem = makeElement("tr", "", {}, {});
 			tHeadElem.appendChild(trElem);
 			
-			//var nameElem = makeElement("td", source.name, {}, {});
 			var includeElem = makeElement("td", "", {}, {});
 			var checkboxLabelElem = makeElement("label", source.name, {className:'checkbox'}, {});
 			var checkboxElem 
@@ -106,9 +105,30 @@ Template.navigation_bar.events = {
 			trElem.appendChild(includeElem);
 		}
 		
+		var yourSourcesTBody = $('#track-config-your-tracks-tbody').get(0);
+		for (var i = 0; i < sources.length; i++){
+			var source = sources[i];
+			
+			var trElem = makeElement("tr", "", {}, {});
+			
+			var includeElem = makeElement("td", "", {}, {});
+			var checkboxLabelElem = makeElement("label", source.name, {className:'checkbox'}, {});
+			var checkboxElem 
+				= makeElement("input", "", {checked:true, type:'checkbox', className:'your-track-source-selection'}, {});
+			
+			checkboxElem.setAttribute('data-name', source.name);
+			checkboxElem.setAttribute('data-value', source.source_uri);
+			
+			includeElem.appendChild(checkboxLabelElem);
+			checkboxLabelElem.appendChild(checkboxElem);
+			
+			trElem.appendChild(includeElem);
+			yourSourcesTBody.appendChild(trElem);
+		}
+		
 		available_tracks_container.appendChild(tableElem);
 		
-		var availableTrackSources = $('.available-track-source-selection').click(function(event) { 
+		var availableTrackSources = $('.available-track-source-selection').click(function(event){ 
 			var uri = event.target.getAttribute('data-value');
 			var name = event.target.getAttribute('data-name');
 			var source = Sources.findOne({'source_uri': uri});
