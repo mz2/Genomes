@@ -32,7 +32,8 @@ $(document).bind('DOMNodeInserted', function(event)
 				Ensembl: 'http://ncbi36.ensembl.org/Homo_sapiens/Location/View?r=${chr}:${start}-${end}',
 				UCSC: 'http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg18&position=chr${chr}:${start}-${end}',
 			},
-	        embedMargin: 260
+	        embedMargin: 360,
+			disablePoweredBy: true
 		});
 
 		Dalliance.addFeatureListener(function(ev, hit) {
@@ -63,9 +64,22 @@ $(document).bind('DOMNodeInserted', function(event)
 			popover_title.appendChild(pop_dismiss_btn);
 			pop_dismiss_btn.appendChild(pop_dismiss_img);
 			popover_inner.appendChild(popover_content);
+			
 			Dalliance.svgHolder.appendChild(popup);
+			
 			$('#dismissbutton').click(function() { $('.popover').remove() });
 		});
+		
+		!function(d,s,id){
+			var js,fjs=d.getElementsByTagName(s)[0];
+			if(!d.getElementById(id)){
+				js=d.createElement(s);
+				js.id=id;
+				js.src="//platform.twitter.com/widgets.js";
+				fjs.parentNode.insertBefore(js,fjs);
+			}
+		}(document,"script","twitter-wjs");
+		
 	}
 });
 

@@ -1,5 +1,6 @@
 <head>
 	<title>Genomes</title>
+	<script src="http://platform.twitter.com/anywhere.js?id=8AcwevFrtDjrf94NUnYfg&v=1" type="text/javascript"></script>
 </head>
 
 <body>
@@ -47,10 +48,11 @@
 						<li>
 							<a href="#">Settings</a>
 						</li>
+						
+						<li style="margin-top:9px;">
+							<a href="https://twitter.com/genomesapp" class="twitter-follow-button" data-show-count="false">Follow @genomesapp</a>
+						</li>
 					</ul>
-					<form class="navbar-search pull-right" action="">
-						<input type="text" class="search-query span2" placeholder="Search">
-					</form>
 				</div><!-- /.nav-collapse -->
 			</div>
 		</div><!-- /navbar-inner -->
@@ -63,29 +65,14 @@
 <template name="container">
 	<div class="container span12" id="content_container">
 		<div class="row">
-			<div class="span2">
+			<div class="span3">
 				<ul class="nav nav-list">
-					<li class="nav-header">
-						Genomes
-					</li>
-					<li>
-						<a href="#">Human</a>
-						<a href="#">Mouse</a>
-						<a href="#">Yeast</a>
-					</li>
-					<li class="nav-header">
-						Projects
-					</li>
-					<li><a href="#">PhD project</a></li>
-					<li><a href="#">Methylation</a></li>
-					<li class="nav-header">
-						People
-					</li>
-					<li><a href="#">Me</a></li>
-					<li><a href="#">Thomas</a></li>
+					<li class="nav-header">Projects</li>
+					{{> project_list}}
+					{{> project_create}}					
 				</ul>
 			</div>
-			<div class="span7">
+			<div class="span9">
 				<div class="container">
 					{{> browser_container}}
 				</div>
@@ -94,7 +81,69 @@
 	</div>
 </template>
 
+<template name="project_list">
+  {{#each projects}}
+    {{> project_item}}
+  {{/each}}
+</template>
+
+<template name="favourite_list">
+  {{#each favourites}}
+    {{> favourite_item}}
+  {{/each}}
+</template>
+
+<template name="project_item">
+	{{#if selected}}
+	<li class="nav-item active">
+		<a class="project-item" href="#">{{name}}</a>
+		<ul class="nav nav-list">
+		{{> favourite_list}}
+		{{> favourite_create}}
+		</ul>
+	</li>
+	{{else}}
+	<li class="nav-item">
+		<a class="project-item" href="#">{{name}}</a>
+	</li>
+	{{/if}}
+</template>
+
+<template name="favourite_item">
+	{{this}}
+	{{#if selected}}
+		<li class="nav-item active"><a href="#">{{name}}</a></li>
+	{{else}}
+		<li class="nav-item"><a href="#">{{name}}</a></li>		
+	{{/if}}
+</template>
+
+<template name="project_create">
+	<li>
+		{{#if editing}}
+		<li>
+			<span><input style="width: 90px;" type="text" id="new-project" placeholder="New project" />
+			<a id="stop-creating-new-project" href="#"><i class="icon-remove"></i></a></span>
+		</li>
+		{{else}}
+		<li>
+			<a id="start-new-project" href="#">New Project...<i class="icon-plus"></i></a>
+		</li>
+		{{/if}}
+	</li>
+</template>
+
+<template name="favourite_create">
+  <div id="createFavourite">
+    <input type="text" id="new-favourite" placeholder="New favourite" />
+  </div>
+</template>
+
 <template name="browser_container">
 	<div id="browser_container" name="browser_container"></div>
-	<a id="popover_test">foo</a>
+	<div id="tweet_container">
+		<a href="https://twitter.com/share" 
+			class="twitter-share-button" 
+			data-url="http://genomes.meteor.com/gene" 
+			data-text="The tweet text" data-via="genomesapp">Tweet</a></div>
 </template>
