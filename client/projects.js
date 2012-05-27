@@ -95,7 +95,29 @@ Template.project_list.events = {
 	var project_name = event.target.childNodes[0].nodeValue;
     Meteor.flush(); // update DOM before focus
 	Session.set("project", project_name);
- }
+  },
+  'click .rename-project': function (event) {
+	var proj_name = event.target.getAttribute("data-value");
+	console.log("rename:" + proj_name);
+	if (proj_name){
+		$('#renamed-project-name').text(proj_name);
+		$('#renamed-project-field').val(proj_name);
+		$('#rename-project-modal').modal({backdrop: true, keyboard: true, show: true});
+	}
+  },
+  'click .delete-project': function (event) {
+	var proj_name = event.target.getAttribute("data-value");
+	console.log("delete project:" + proj_name);
+	if (proj_name) {
+		Projects.remove({name: proj_name});
+		Favourites.remove({project: proj_name});
+    }
+  },
+  'click .copy-project-link': function (event) {
+	alert("copy project:" + event.target);
+	console.log("copy link to project:" + event.target);
+	//TODO: Implement with the Backbone router
+  }
 };
 
 Template.project_item.selected = function() {
