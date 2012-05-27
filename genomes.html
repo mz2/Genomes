@@ -79,6 +79,20 @@
 			</div>
 		</div>
 	</div>
+	<!-- sample modal content -->
+    <div id="rename-project-modal" class="modal hide fade">
+     <div class="modal-header">
+       <button class="close" data-dismiss="modal">&times;</button>
+       <h3>Rename Project <span id="renamed-project-name">Name</span></h3>
+     </div>
+     <div class="modal-body">
+<span>Project Name: <input style="width: 120px;" type="text" id="renamed-project-field" /></span>
+     </div>
+     <div class="modal-footer">
+       <a href="#" id="rename-project-cancel" class="btn" data-dismiss="modal">Cancel</a>
+       <a href="#" id="rename-project-save-changes" class="btn btn-primary">Rename</a>
+     </div>
+   </div>
 </template>
 
 <template name="project_list">
@@ -96,7 +110,15 @@
 <template name="project_item">
 	{{#if selected}}
 	<li class="nav-item active">
-		<a class="project-item" href="#">{{name}}</a>
+		<div class="btn-group">
+	          <button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i>{{name}} <span class="caret"></span></button>
+	          <ul class="dropdown-menu">
+	            <li><a class="rename-project" data-value="{{name}}" href="#">Rename</a></li>
+	            <li><a class="copy-project-link" data-value="{{name}}" href="#">Copy Link</a></li>
+	            <li class="divider"></li>
+	            <li><a class="delete-project" data-value="{{name}}" href="#">Delete Project</a></li>
+	          </ul>
+	        </div><!-- /btn-group -->
 		<ul class="nav nav-list">
 		{{> favourite_list}}
 		{{> favourite_create}}
@@ -104,7 +126,7 @@
 	</li>
 	{{else}}
 	<li class="nav-item">
-		<a class="project-item" href="#">{{name}}</a>
+		<span><i class="icon-book"/><a class="project-item" href="#">{{name}}</a></span>
 	</li>
 	{{/if}}
 </template>
