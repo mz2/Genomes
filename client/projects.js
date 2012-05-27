@@ -1,5 +1,6 @@
 Projects = new Meteor.Collection("projects");
 Favourites = new Meteor.Collection("favourites");
+Sources = new Meteor.Collection("sources");
 
 Genomes = {}
 
@@ -23,8 +24,14 @@ Genomes.favouritesLoaded = function() {
   Meteor.flush();
 }
 
+Genomes.sourcesLoaded = function() {
+	console.log('sources loaded');
+	Meteor.flush();
+}
 
 Meteor.subscribe("projects", Genomes.projectsLoaded);
+
+Meteor.subscribe("sources", Genomes.sourcesLoaded);
 
 Meteor.autosubscribe(function() {
 	var project = Session.get('project');
@@ -50,6 +57,26 @@ Template.navigation_bar.events = {
 			console.log("Saving track config: to implement.");
 			//Session.set("track-config", );
 		});
+		
+		var sources = Dalliance.sources;
+		var availableSources = Dalliance.availableSources.value;
+		
+		console.log(availableSources.value);
+		
+		for (var i = 0; i < availableSources.length; i++){
+			var source = availableSources[i];
+			var uri = source.source_uri;
+			var existingSource = Sources.findOne({source_uri: uri});
+			if (!existingSource){
+				console.log("Saved new source " + uri);
+				Sources.insert(source);
+			}
+			else
+			{
+				console.log("Source " + uri + " already exists");
+			}
+		}
+		
 		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
 }
