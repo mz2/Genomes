@@ -50,11 +50,6 @@ Template.favourite_list.favourites = function() {
 	{
 		console.log("Getting favourite list for project " + project);
 		var favs = Favourites.find({'project': project});
-		console.log(favs);
-		favs.forEach(function (fav) {
-			console.log(fav.name);
-		});
-		
 		return favs;
 	}
 	else
@@ -160,6 +155,13 @@ make_okcancel_handler({
 		evt.target.blur();
 	}
 });
+
+Template.favourite_list.events = {
+  'click .favourite-item': function (event) {
+	var favourite_name = event.target.getAttribute("data-value");
+    Session.set("favourite", favourite_name);
+  }
+};
 
 Template.favourite_create.events = {};
 

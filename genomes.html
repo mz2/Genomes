@@ -133,9 +133,9 @@
 
 <template name="favourite_item">
 	{{#if selected}}
-		<li class="nav-item active"><a href="#"><i class="icon-map-marker"/>{{name}}</a></li>
+		<li class="nav-item active"><a class="favourite-item" href="#" data-value="{{name}}"><i class="icon-map-marker"/>{{name}}</a></li>
 	{{else}}
-		<li class="nav-item"><a href="#"><i class="icon-map-marker"/>{{name}}</a></li>		
+		<li class="nav-item"><a class="favourite-item" href="#" data-value="{{name}}"><i class="icon-map-marker"/>{{name}}</a></li>		
 	{{/if}}
 </template>
 
@@ -143,7 +143,7 @@
 	<li>
 		{{#if editing}}
 		<li>
-			<span><input style="width: 90px;" type="text" id="new-project" placeholder="New project" />
+			<span><input style="width: 90px;" type="text" id="new-project" placeholder="Project Name" />
 			<a id="stop-creating-new-project" href="#"><i class="icon-remove"></i></a></span>
 		</li>
 		{{else}}

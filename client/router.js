@@ -4,7 +4,7 @@ var GenomesRouter = Backbone.Router.extend({
 	"projects/:project": "project"
   },
   new_project: function () {
-	console.log("New project");
+	console.log("New Project");
   },
   create_project: function(project_name) {
 	console.log("Create project " + project_name);
