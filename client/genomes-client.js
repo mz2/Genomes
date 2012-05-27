@@ -67,6 +67,13 @@ $(document).bind('DOMNodeInserted', function(event)
 			$('#dismissbutton').click(function() { $('.popover').remove() });
 		});
 		
+
+	  	Dalliance.addViewListener(function(chr, min, max) {
+		  	Session.set('chromosome', chr);
+			Session.set('chromosome_min', min);
+			Session.set('chromosome_max', max);
+	  	});
+		
 		!function(d,s,id){
 			var js,fjs=d.getElementsByTagName(s)[0];
 			if(!d.getElementById(id)){

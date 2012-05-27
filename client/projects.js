@@ -42,6 +42,12 @@ Template.container.project_list_header = function() {
 		return "Projects";
 }*/
 
+Template.navigation_bar.events = {
+	'click #configure-tracks': function(event){
+		
+	}
+}
+
 Template.project_list.projects = function() { return Projects.find({}); }
 
 Template.favourite_list.favourites = function() {
@@ -160,6 +166,7 @@ Template.favourite_list.events = {
   'click .favourite-item': function (event) {
 	var favourite_name = event.target.getAttribute("data-value");
     Session.set("favourite", favourite_name);
+    console.log("Set current favourite: ", favourite_name);
   }
 };
 
