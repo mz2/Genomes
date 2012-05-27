@@ -1,3 +1,6 @@
+Projects = new Meteor.Collection("projects");
+Favourites = new Meteor.Collection("favourites");
+
 Genomes = {}
 
 Genomes.log = function(message) {
@@ -20,8 +23,6 @@ Genomes.favouritesLoaded = function() {
   Meteor.flush();
 }
 
-Projects = new Meteor.Collection("projects");
-Favourites = new Meteor.Collection("favourites");
 
 Meteor.subscribe("projects", Genomes.projectsLoaded);
 
@@ -144,6 +145,7 @@ make_okcancel_handler({
 		console.log("Favourite name: " + text);
 		if (text.length > 1)
 		{
+			console.log("Inserting favourite");
 			Favourites.insert({project: Session.get('project'), name: text})
 		}
 		else

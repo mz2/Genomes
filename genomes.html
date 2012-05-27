@@ -110,11 +110,10 @@
 </template>
 
 <template name="favourite_item">
-	{{this}}
 	{{#if selected}}
-		<li class="nav-item active"><a href="#">{{name}}</a></li>
+		<li class="nav-item active"><a href="#"><i class="icon-map-marker"/>{{name}}</a></li>
 	{{else}}
-		<li class="nav-item"><a href="#">{{name}}</a></li>		
+		<li class="nav-item"><a href="#"><i class="icon-map-marker"/>{{name}}</a></li>		
 	{{/if}}
 </template>
 
