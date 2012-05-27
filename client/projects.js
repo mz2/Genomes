@@ -77,6 +77,22 @@ Template.navigation_bar.events = {
 			}
 		}
 		
+		var tableElem = makeElement("table", "", {}, {});
+		var tHeadElem = makeElement("thead", "", {}, {});
+		tableElem.appendChild(tHeadElem);
+		var available_tracks_container = $('#track-config-available-tracks-container').get(0);
+		
+		for (var i = 0; i < availableSources.length; i++)
+		{
+			var trElem = makeElement("tr", "", {}, {});
+			tHeadElem.appendChild(trElem);
+			
+			var tdElem = makeElement("td", "", {}, {});
+			trElem.appendChild(tdElem);
+		}
+		
+		available_tracks_container.appendChild(tableElem);
+		
 		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
 }
