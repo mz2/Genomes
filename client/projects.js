@@ -73,7 +73,7 @@ Template.navigation_bar.events = {
 			}
 			else
 			{
-				console.log("Source " + uri + " already exists");
+				//console.log("Source " + uri + " already exists");
 			}
 		}
 		
@@ -82,16 +82,38 @@ Template.navigation_bar.events = {
 		tableElem.appendChild(tHeadElem);
 		var available_tracks_container = $('#track-config-available-tracks-container').get(0);
 		
-		for (var i = 0; i < availableSources.length; i++)
-		{
+		var children = $('#track-config-available-tracks-container').children().get()
+		for (var i = 0; i < children.length; i++){
+			available_tracks_container.removeChild(children[i]);
+		}
+		
+		for (var i = 0; i < availableSources.length; i++){
+			var source = availableSources[i];
+			
 			var trElem = makeElement("tr", "", {}, {});
 			tHeadElem.appendChild(trElem);
 			
-			var tdElem = makeElement("td", "", {}, {});
-			trElem.appendChild(tdElem);
+			//var nameElem = makeElement("td", source.name, {}, {});
+			var includeElem = makeElement("td", "", {}, {});
+			var checkboxLabelElem = makeElement("label", source.name, {className:'checkbox'}, {});
+			var checkboxElem 
+				= makeElement("input", "", {checked:false, type:'checkbox', className:'available-track-source-selection'}, {});
+			
+			checkboxElem.setAttribute('data-value', source.source_uri);
+			
+			includeElem.appendChild(checkboxLabelElem);
+			checkboxLabelElem.appendChild(checkboxElem);
+			
+			trElem.appendChild(includeElem);
 		}
 		
 		available_tracks_container.appendChild(tableElem);
+		
+		var availableTrackSources = $('.available-track-source-selection').click(function(event) { 
+			var data_uri = event.target.getAttribute('data-value');
+			console.log(event.target);
+			alert("Should add " + data_uri);
+		});
 		
 		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
