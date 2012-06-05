@@ -166,7 +166,7 @@ Template.navigation_bar.events = {
 				if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
 				tHeadElem.appendChild(trElem);
 				checkbox.className = 'available-track-source-selection';
-				//Dalliance.removeTier(source); //TODO: Re-introduce when track removal is possible
+				Dalliance.removeTier(source); //TODO: Re-introduce when track removal is possible
 			}
 		});
 		
