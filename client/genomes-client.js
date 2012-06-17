@@ -32,8 +32,6 @@ $(document).bind('DOMNodeInserted', function(event)
 				Ensembl: 'http://ncbi36.ensembl.org/Homo_sapiens/Location/View?r=${chr}:${start}-${end}',
 				UCSC: 'http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg18&position=chr${chr}:${start}-${end}',
 			},
-	            embedMargin: 280,
-		    tabMargin: 0,
 			disablePoweredBy: true
 		});
 
