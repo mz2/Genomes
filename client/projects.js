@@ -91,8 +91,10 @@ Template.navigation_bar.events = {
 			var trElem = makeElement("tr", "", {}, {});
 			tHeadElem.appendChild(trElem);
 			
-			var includeElem = makeElement("td", "", {}, {});
-			var checkboxLabelElem = makeElement("label", source.name, {className:'checkbox'}, {});
+			var includeElem 
+				= makeElement("td", "", {}, {});
+			var checkboxLabelElem 
+				= makeElement("label", source.name, {className:'checkbox'}, {});
 			var checkboxElem 
 				= makeElement("input", "", {checked:false, type:'checkbox', className:'available-track-source-selection'}, {});
 			
@@ -101,7 +103,7 @@ Template.navigation_bar.events = {
 			
 			includeElem.appendChild(checkboxLabelElem);
 			checkboxLabelElem.appendChild(checkboxElem);
-			
+						
 			trElem.appendChild(includeElem);
 		}
 		
@@ -166,7 +168,7 @@ Template.navigation_bar.events = {
 				if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
 				tHeadElem.appendChild(trElem);
 				checkbox.className = 'available-track-source-selection';
-				//Dalliance.removeTier(source); //TODO: Re-introduce when track removal is possible
+				Dalliance.removeTier(source);
 			}
 		});
 		
