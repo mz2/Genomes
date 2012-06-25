@@ -91,6 +91,24 @@ $(document).bind('DOMNodeInserted', function(event)
 			}
 		}(document,"script","twitter-wjs");
 		
+		$(function() {
+				$( "#slider" ).slider({
+					value:30000,
+					min: 100,
+					max: 100000,
+					step: 0.1,
+					slide: function( event, ui ) {
+						var viewRange = Dalliance.max - Dalliance.min;
+						var halfRange = viewRange * 0.5;
+						var halfPoint = Dalliance.min + halfRange;
+						
+						var newRange = ui.value;
+						var halfNewRange = newRange * 0.5;
+						Dalliance.min = halfPoint - halfNewRange;
+						Dalliance.max = halfPoint + halfNewRange;
+					}
+				});
+			});
 	}
 });
 
