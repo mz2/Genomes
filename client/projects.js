@@ -35,9 +35,15 @@ Meteor.subscribe("sources", Genomes.sourcesLoaded);
 
 Meteor.autosubscribe(function() {
 	var project = Session.get('project');
-	console.log("Autosubscribing " + project);
 	if (project)
+	{
+		console.log("Autosubscribing " + project);
 		Meteor.subscribe("favourites", Session.get("project"), Genomes.favouritesLoaded);
+	}
+	else
+	{
+		console.log("No selected project in session.");
+	}
 });
 
 /*
@@ -232,7 +238,8 @@ Template.project_list.events = {
 		$('#renamed-project-name').text(proj_name);
 		$('#renamed-project-field').val(proj_name);
 		$('#rename-project-save-changes').click(function(event) {
-			Projects.update({name:proj_name}, {name: $('#renamed-project-field').val()} ) 
+			console.log("Updating project with name '" + proj_name + "'");
+			Projects.update({name:proj_name}, {name: $('#renamed-project-field').val()} ); 
 		});
 		$('#rename-project-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
