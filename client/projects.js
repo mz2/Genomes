@@ -30,7 +30,6 @@ Genomes.sourcesLoaded = function() {
 }
 
 Meteor.subscribe("projects", Genomes.projectsLoaded);
-
 Meteor.subscribe("sources", Genomes.sourcesLoaded);
 
 Meteor.autosubscribe(function() {
@@ -46,45 +45,7 @@ Meteor.autosubscribe(function() {
 	}
 });
 
-Template.navigation_bar.events = {
-	'click #configure-tracks': function(event) {
-		var sources = Dalliance.sources;
-		var availableSources = Dalliance.availableSources.value;
-		var allSources = availableSources.slice(0);
-		for (var i = 0; i < sources.length; i++){
-			allSources.push(sources[i]);
-		}
-		
-		// Persist all possibly missing sources into our database
-		persistMissingSources(allSources);
-		refreshSources(sources, availableSources);
-		
-		// Adding a source
-		var availableTrackSources = $('.available-track-source-selection').click(addTrackHandler);
-		
-		// Removal of a source
-		var yourTrackSources = $('.your-track-source-selection').click(removeTrackHandler);
-		
-		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
-	}
-}
-
 Template.project_list.projects = function() { return Projects.find({}); }
-
-Template.favourite_list.favourites = function() {
-	var project = Session.get("project");
-	if (Session.get('project') == project)
-	{
-		console.log("Getting favourite list for project " + project);
-		var favs = Favourites.find({'project': project});
-		return favs;
-	}
-	else
-	{
-		console.log("Getting favourite list for NULL project.");
-		return [];		
-	}
-}
 
 var okcancel_events = function (selector) {
   return 'keyup ' + selector + ', keydown ' + selector + ', focusout '+ selector;
@@ -111,6 +72,28 @@ var make_okcancel_handler = function (options) {
     }
   };
 };
+
+Template.favourite_create.events = {};
+
+Template.favourite_create.events[okcancel_events('#new-favourite')] =
+make_okcancel_handler({
+	ok: function(text, evt)
+	{
+		console.log("Favourite name: " + text);
+		if (text.length > 1)
+		{
+			console.log("Inserting favourite");
+			Favourites.insert({project: Session.get('project'), name: text})
+		}
+		else
+		{
+			console.log("Empty favourite name!");
+		}
+		evt.target.blur();
+	}
+});
+
+
 
 Template.project_list.events = {
   'click .project-item': function (event) {

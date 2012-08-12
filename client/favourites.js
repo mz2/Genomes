@@ -1,3 +1,17 @@
+Template.favourite_list.favourites = function() {
+	var project = Session.get("project");
+	if (Session.get('project') == project)
+	{
+		console.log("Getting favourite list for project " + project);
+		var favs = Favourites.find({'project': project});
+		return favs;
+	}
+	else
+	{
+		console.log("Getting favourite list for NULL project.");
+		return [];		
+	}
+}
 
 Template.favourite_list.events = {
   'click .favourite-item': function (event) {
@@ -6,23 +20,3 @@ Template.favourite_list.events = {
     console.log("Set current favourite: ", favourite_name);
   }
 };
-
-Template.favourite_create.events = {};
-
-Template.favourite_create.events[okcancel_events('#new-favourite')] =
-make_okcancel_handler({
-	ok: function(text, evt)
-	{
-		console.log("Favourite name: " + text);
-		if (text.length > 1)
-		{
-			console.log("Inserting favourite");
-			Favourites.insert({project: Session.get('project'), name: text})
-		}
-		else
-		{
-			console.log("Empty favourite name!");
-		}
-		evt.target.blur();
-	}
-});
