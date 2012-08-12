@@ -8,9 +8,66 @@ Template.track_config_dialog.events = {
 			allSources.push(sources[i]);
 		}
 		
+		var sources = Dalliance.sources;
+		var availableSources = Dalliance.availableSources.value;
 		refreshSources(sources, availableSources);
+		refreshTrackEventHandlers();
 	}
 };
+
+var addTrackHandler = function(event){ 
+	var checkbox = event.target;
+	var uri = checkbox.getAttribute('data-value');
+	var name = checkbox.getAttribute('data-name');
+	var source = Sources.findOne({'source_uri': uri});
+	var yourSourcesTBody = $('#track-config-your-tracks-tbody').get(0);
+	
+	console.log("Add:" + yourSourcesTBody);
+	
+	if (!source){
+		alert("Could not find source with source URI '" + uri + "'");
+	}
+	else{
+		Dalliance.addTier(source);
+		var trElem = checkbox.parentNode.parentNode.parentNode;
+		if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
+		yourSourcesTBody.appendChild(trElem);
+		checkbox.className = 'your-track-source-selection';
+		
+		console.log("Added track " + source);
+		
+		var sources = Dalliance.sources;
+		var availableSources = Dalliance.availableSources.value;
+		refreshSources(sources, availableSources);
+		refreshTrackEventHandlers();
+	}
+};
+
+var removeTrackHandler = function(event) {
+	var checkbox = event.target;
+	var uri = checkbox.getAttribute('data-value');
+	var name = checkbox.getAttribute('data-name');
+	var source = Sources.findOne({'source_uri': uri});
+	
+	var tHeadElem = $('#track-config-available-tracks-thead')[0];
+	console.log(tHeadElem);
+	
+	if (!source){
+		alert("Could not find source with source URI '" + uri + "'");
+	}
+	else{
+		Dalliance.removeTier(source);
+		var trElem = checkbox.parentNode.parentNode.parentNode;
+		if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
+		tHeadElem.appendChild(trElem);
+		checkbox.className = 'available-track-source-selection';
+		
+		console.log("Removed track " + source);
+		
+		refreshTrackEventHandlers();
+	}
+};
+
 
 var refreshSources = function(sources, availableSources) {
 	var tableElem = makeElement("table", "", {className:'track-config-available-tracks-table'}, {});
@@ -27,14 +84,6 @@ var refreshSources = function(sources, availableSources) {
 	for (var i = 0; i < availableSources.length; i++){
 		var source = availableSources[i];
 		var sourceFilter = Session.get("available-tracks-filter");
-		console.log(source.name);
-		console.log(sourceFilter);
-		if (sourceFilter) {
-			var filterExp = new RegExp(sourceFilter, 'i');
-			if (!filterExp.test(source.name) &&
-			    !filterExp.test(source.desc)) continue;
-		}
-		
 		var trElem = makeElement("tr", "", {}, {});
 		tHeadElem.appendChild(trElem);
 		
@@ -45,12 +94,21 @@ var refreshSources = function(sources, availableSources) {
 		var checkboxElem 
 			= makeElement("input", "", {checked:false, type:'checkbox', className:'available-track-source-selection'}, {});
 		
+		checkboxElem.onClick = addTrackHandler;
+
 		checkboxElem.setAttribute('data-name', source.name);
 		checkboxElem.setAttribute('data-value', source.source_uri);
 		
+		console.log(source.name);
+		console.log(sourceFilter);
+		if (sourceFilter) {
+			var filterExp = new RegExp(sourceFilter, 'i');
+			if (!filterExp.test(source.name) &&
+			    !filterExp.test(source.desc)) continue;
+		}
+		
 		includeElem.appendChild(checkboxLabelElem);
 		checkboxLabelElem.appendChild(checkboxElem);
-					
 		trElem.appendChild(includeElem);
 	}
 	
@@ -69,6 +127,8 @@ var refreshSources = function(sources, availableSources) {
 		var checkboxLabelElem = makeElement("label", source.name, {className:'checkbox'}, {});
 		var checkboxElem 
 			= makeElement("input", "", {checked:true, type:'checkbox', className:'your-track-source-selection'}, {});
+		
+		checkboxElem.onClick = removeTrackHandler;
 		
 		checkboxElem.setAttribute('data-name', source.name);
 		checkboxElem.setAttribute('data-value', source.source_uri);
@@ -99,39 +159,30 @@ var persistMissingSources = function(allSources){
 	}
 }
 
-var addTrackHandler = function(event){ 
-	var checkbox = event.target;
-	var uri = checkbox.getAttribute('data-value');
-	var name = checkbox.getAttribute('data-name');
-	var source = Sources.findOne({'source_uri': uri});
-	var yourSourcesTBody = $('#track-config-your-tracks-tbody').get(0);
+var refreshTrackEventHandlers = function() {
+	console.log("Refreshing track event handlers");
+	// Adding a source
+	var availableTrackSources = $('.available-track-source-selection').click(addTrackHandler);
 	
-	if (!source){
-		alert("Could not find source with source URI '" + uri + "'");
-	}
-	else{
-		Dalliance.addTier(source);
-		var trElem = checkbox.parentNode.parentNode.parentNode;
-		if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
-		yourSourcesTBody.appendChild(trElem);
-		checkbox.className = 'your-track-source-selection';
-	}
-};
+	// Removal of a source
+	var yourTrackSources = $('.your-track-source-selection').click(removeTrackHandler);
+}
 
-var removeTrackHandler = function(event){
-		var checkbox = event.target;
-	var uri = checkbox.getAttribute('data-value');
-	var name = checkbox.getAttribute('data-name');
-	var source = Sources.findOne({'source_uri': uri});
-	
-	if (!source){
-		alert("Could not find source with source URI '" + uri + "'");
+Template.navigation_bar.events = {
+	'click #configure-tracks': function(event) {
+		var sources = Dalliance.sources;
+		var availableSources = Dalliance.availableSources.value;
+		var allSources = availableSources.slice(0);
+		for (var i = 0; i < sources.length; i++){
+			allSources.push(sources[i]);
+		}
+		
+		// Persist all possibly missing sources into our database
+		persistMissingSources(allSources);
+		refreshSources(sources, availableSources);
+		
+		refreshTrackEventHandlers();
+		
+		$('#track-config-modal').modal({backdrop: true, keyboard: true, show: true});
 	}
-	else{
-		var trElem = checkbox.parentNode.parentNode.parentNode;
-		if (trElem.tagName.toLowerCase() == 'tr') { trElem.parentNode.removeChild(trElem); }
-		tHeadElem.appendChild(trElem);
-		checkbox.className = 'available-track-source-selection';
-		Dalliance.removeTier(source);
-	}
-};
+}
